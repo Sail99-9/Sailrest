@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sailrest</title>
+  <style>
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
+    .logo {
+      width: 35px;
+      cursor: pointer;
+    }
+
+    .create-btn {
+      all: unset;
+      padding: 8px 16px;
+      border-radius: 8px;
+      margin-left: 5px;
+    }
+
+    .create-btn:hover {
+      background-color: black;
+      color: white;
+    }
+
+    #photoList {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .photo {
+      width: 240px;
+      height: 240px;
+      object-fit: cover;
+      margin: 10px;
+      border-radius: 20px;
+    }
+
+    .photo:hover {
+      filter: brightness(0.7);
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+</head>
+
+<body>
+  <nav class="navbar bg-body-white">
+    <div class="container-fluid">
+      <div>
+          <img
+            src="https://raw.githubusercontent.com/Sail99-9/Sailrest/34d38d42306709617b71615acfe2c8055c973e9a/static/logo.png"
+            alt="Logo" class="logo" onclick="redirectToMainPage()" />
+      </div>
+
+      <form class="d-flex" role="search">
+        <input class="form-control me-1" type="search" placeholder="검색" aria-label="Search" style="width: 600px" />
+        <button class="btn btn-outline-danger" type="submit">Search</button>
+      </form>
+
+      <div>
+          <button id="loginButton" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#loginModal">
+            로그인
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="redirectToRegister()">
+            회원가입
+          </button>
+
+        <!-- 로그인 모달 -->
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <!-- 로그인 모달의 내용 -->
+                <form method="POST">
+                  <div class="form-group mb-4">
+                    <label for="username">아이디</label>
+                    <input type="text" class="form-control mt-2" name="username" required>
+                  </div>
+                  <div class="form-group mb-5">
+                    <label for="password">비밀번호</label>
+                    <input type="password" class="form-control mt-2" name="password" required>
+                  </div>
+                  <button type="submit" class="btn btn-danger d-block mx-auto">로그인</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- 이미지 예시 -->
+  <div id="photoList"></div>
+  <script>
+
+    // 로고 클릭 시 메인 페이지로 이동
+    function redirectToMainPage() {
+    window.location.href = '/';
+    }
+
+    // 회원가입 버튼 클릭 시 회원가입 페이지로 이동
+    function redirectToRegister() {
+      window.location.href = '/register';
+    }
+
+    // Sample img
+    var photoUrls = [
+      "https://i.pinimg.com/236x/c5/b3/67/c5b36740351760270c80e50acf272578.jpg",
+      "https://i.pinimg.com/236x/df/b3/af/dfb3afe3ad28c4ba1c806a7423df8525.jpg",
+      "https://i.pinimg.com/236x/80/8e/85/808e85d04a40fcfe05b2f9485bb73088.jpg",
+      "https://i.pinimg.com/236x/ad/48/93/ad489358f59eaffe15227f953ff5347e.jpg",
+      "https://i.pinimg.com/236x/1a/7e/73/1a7e7368b24cdfc74f2c08c7d54f1c9a.jpg",
+      "https://i.pinimg.com/236x/9d/1a/ae/9d1aaef154ffbab92fdb7d19cff1e215.jpg",
+      "https://i.pinimg.com/236x/69/cf/bb/69cfbbdb087cfc6c1940801f3d4bdfef.jpg",
+      "https://i.pinimg.com/236x/83/17/b1/8317b132e34806da31102ad291a962b7.jpg",
+    ];
+
+    function createPhotoElements() {
+      const photoListContainer = document.getElementById("photoList");
+
+      photoUrls.forEach(function (url) {
+        const imgElement = document.createElement("img");
+        imgElement.src = url;
+        imgElement.alt = "Photo";
+        imgElement.className = "photo";
+
+        imgElement.addEventListener("click", function () {
+          window.location.href = url; // 이 부분은 실제 상세 페이지 URL로 교체해야 합니다.
+        });
+
+        photoListContainer.appendChild(imgElement);
+      });
+    }
+
+    createPhotoElements();
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
