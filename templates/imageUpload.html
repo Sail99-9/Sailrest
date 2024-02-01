@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 업로드 폼</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .upload-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left; /* Text align left */
+            width: 20%;
+        }
+
+        #imageInfoForm {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .file-upload-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            border: 2px solid #e74c3c;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-container img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        label[for="imageName"],
+        label[for="imageDescription"] {
+            font-weight: bold;
+            color: #2d3436;
+            margin-bottom: 5px; /* Added margin */
+            display: block; /* Display block */
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%; /* Full width */
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px; /* Rounded corners */
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #cd1d1d;
+            color: white;
+            padding: 6px 8px; /* Adjusted padding */
+            border: 2px solid #cd1d1d;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px; /* Adjusted font size */
+        }
+
+        button[type="submit"]:hover {
+            background-color: white;
+            color: #cd1d1d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <div class="upload-section col-md-5">
+            <form id="imageInfoForm" action="{{ url_for('image_upload') }}" method="GET">
+                <div class="file-upload-container" id="fileUploadContainer">
+                    <label for="imageUrl">사진 URL</label>
+                    <input type="text" name="imageUrl" id="imageUrl" onchange="previewImageFromUrl()">
+                    <img id="preview" alt="Preview Image">
+                </div>
+                
+                <p style="color: #cd1d1d; font-size: 12px;">이미지나 URL 중 하나만 입력해 주세요</p>
+
+                <label for="imageName">사진 이름</label>
+                <input type="text" name="imageName" id="imageName">
+
+                <img src="">
+
+
+                <label for="imageName">사진 이름</label>
+                <input type="text" name="imageName" id="imageName">
+
+                <label for="imageDescription">사진 설명</label>
+                <textarea name="imageCaption" id="imageDescription" rows="4"></textarea>
+
+                <button type="submit">Submit</button>
+            </form>
+            <!-- 이미지를 표시할 div -->
+            <div class="showImage"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI/tZ1T/5bC3zmcKt1W5JY9K6eP5cyUEr5W+o/sE=" crossorigin="anonymous"></script>
+    <script>
+        function previewImage(input) {
+            const fileUploadContainer = document.getElementById('fileUploadContainer');
+            const previewImage = document.getElementById('preview');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    fileUploadContainer.querySelector('label').style.display = 'none';
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                fileUploadContainer.querySelector('label').style.display = 'block';
+                previewImage.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>
