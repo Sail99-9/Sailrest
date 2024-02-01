@@ -80,11 +80,11 @@
                 <div id="user-avatar-nav" class="avatar_nav"></div>
                 <script>
                     $(document).ready(function () {
-                        var userId = "apple";
+                        var userId = "{{ username }}";
                         var firstLetter = userId.charAt(0).toUpperCase();
                         $("#user-avatar-nav").text(firstLetter);
                         $("#user-avatar-nav").click(function () {
-                            window.location.href = "/mypage";
+                            window.location.href = "/mypage/{{ username }}";
                         });
                     });
                 </script>
@@ -98,12 +98,7 @@
 
         // 로고 클릭 시 메인 페이지로 이동
         function redirectToMainPage() {
-            window.location.href = '/login';
-        }
-
-        // 회원가입 버튼 클릭 시 회원가입 페이지로 이동
-        function redirectToRegister() {
-            window.location.href = '/register';
+            window.location.href = '/login/{{ username }}';
         }
 
         // Sample img

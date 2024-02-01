@@ -87,11 +87,11 @@
                 <div id="user-avatar-nav" class="avatar_nav"></div>
                 <script>
                     $(document).ready(function () {
-                        var userId = "apple";
+                        var userId = "{{ username }}";
                         var firstLetter = userId.charAt(0).toUpperCase();
                         $("#user-avatar-nav").text(firstLetter);
                         $("#user-avatar-nav").click(function () {
-                            window.location.href = "/mypage";
+                            window.location.href = "/mypage/{{ username }}";
                         });
                     });
                 </script>
@@ -103,13 +103,13 @@
         <div id="user-avatar" class="avatar"></div>
         <script>
             $(document).ready(function () {
-                var userId = "apple";
+                var userId = "{{ username }}";
                 var firstLetter = userId.charAt(0).toUpperCase();
                 $("#user-avatar").text(firstLetter);
             });
         </script>
     
-        <h2 class="mt-3 pb-5">apple</h2>
+        <h2 class="mt-3 pb-5">{{ username }}</h2>
     
         <div class="pb-4">
             <button id="create-btn" class="button" onclick="toggleButton(this)">생성됨</button>
@@ -176,6 +176,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function redirectToMainPage() {
+        window.location.href = '/login/{{ username }}';
+        }
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"

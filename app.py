@@ -23,8 +23,6 @@ create_tables()
 
 @app.route('/', methods=['GET', 'POST'])
 def mainpage():
-    login_success = False
-    
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -33,7 +31,7 @@ def mainpage():
 
         if User.query.filter_by(password=password).first():
             session['user_id'] = user.id
-            return redirect(url_for('login'))
+            return redirect(url_for('login', username=username))
 
     return render_template('mainpage.html')
 
@@ -51,13 +49,13 @@ def register():
 
     return render_template('register.html')
 
-@app.route('/login')
-def login():
-    return render_template('mainpage_login.html')
+@app.route('/login/<username>')
+def login(username):
+    return render_template('mainpage_login.html', username=username)
 
-@app.route('/mypage')
-def mypage():
-    return render_template('mypage.html')
+@app.route('/mypage/<username>')
+def mypage(username):
+    return render_template('mypage.html', username=username)
 
 if __name__ == '__main__':
     app.run(debug=True)
