@@ -23,6 +23,20 @@ class Image(db.Model):
     image_url = db.Column(db.String, primary_key=False)
     created_at = db.Column(db.DateTime, primary_key=False)
 
+class Comment(db.Model):
+    comment_id = db.Column(db.Integer, primary_key=True)
+    image_id = db.Column(db.String, nullable=False)
+    # user_id = db.Column(db.String, nullable=False)
+    # order = db.Column(db.Integer, primary_key=True, nullable=False)
+    comment = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, primary_key=False)
+
+class PinImage(db.Model):
+    pid_id = db.Column(db.Integer, primary_key=True)
+    image_id = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.String)
+    created_at = db.Column(db.DateTime, primary_key=False)
+
 
 # 데이터베이스 초기화를 애플리케이션이 실행될 때 수행
 def create_tables():
@@ -68,24 +82,40 @@ def login(username):
 def mypage(username):
     return render_template('mypage.html', username=username)
 
-@app.route("/image/")
-def image():
-    image_url = "https://www.greenart.co.kr/upimage/new_editor/20212/20210201112021.jpg"
-    author_url = "https://github.com/Sail99-9/Sailrest"
+@app.route("/image/<image_id>/")
+def image(image_id):
+    image = Image.query.filter_by(image_id=image_id).all()
     author_img_url = "https://velog.velcdn.com/images/heelieben/post/cd5beeed-ba8b-463c-8157-7f0dc803605e/image.png"
-    author_id = "hanghae99"
-    caption = "내용이 여기 들어갑니다."
-    comments = ["댓글1", "댓글2", "댓글3", "댓글4", "댓글5"]
+    comments = Comment.query.filter_by(image_id=image_id).all()
 
     context = {
-        "image_url": image_url,
-        "author_url": author_url,
         "author_img_url": author_img_url,
-        "author_id": author_id,
-        "caption": caption,
+        "image": image,
         "comments": comments,
     }
     return render_template('imagepage.html', data=context)
+
+@app.route('/comment/write/')
+def comment_write():
+    # user_id 없이 comment만 DB저장하는 방벙
+    comment_receive = request.args.get("comment")
+    image_id = request.args.get("image_id")
+
+    now = datetime.now()
+    created_at_time=now
+
+    # comment_data = Comment(comment_id=comment_id, image_id=image_id, user_id=user_id, order=order, comment=comment_receive, created_at=created_at_time)
+
+    # db.session.add()
+    # db.session.commit()
+
+    return redirect(url_for('image', image_id=image_id))
+
+@app.route('/image/pined/')
+def pin_image():
+    username = "hsm"
+    # DB 해당 이미지 pined 항목 수정
+    return redirect(url_for('mypage', username=username))
 
 @app.route("/image/uploadPage/")
 def image_upload_page():
