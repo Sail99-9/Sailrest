@@ -22,30 +22,36 @@
 
         .upload-section {
             background-color: white;
-            border-radius: 10px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 40px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: left; /* Text align left */
-            width: 20%;
+            width: 80%;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
         }
 
         #imageInfoForm {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
-
+        
         .file-upload-container {
             position: relative;
             width: 100%;
             height: 300px;
-            border: 2px solid #e74c3c;
+            border: 1px dashed #cd1d1d;
             border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             overflow: hidden;
+            margin-bottom: 20px;
         }
 
         input[type="file"] {
@@ -69,7 +75,7 @@
         label[for="imageDescription"] {
             font-weight: bold;
             color: #2d3436;
-            margin-bottom: 5px; /* Added margin */
+            margin-bottom: 20px; /* Added margin */
             display: block; /* Display block */
         }
 
@@ -89,12 +95,20 @@
             border: 2px solid #cd1d1d;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px; /* Adjusted font size */
+            font-size: 20px; /* Adjusted font size */
+            margin-top: 40px;
+            width: 100%;
         }
 
         button[type="submit"]:hover {
             background-color: white;
             color: #cd1d1d;
+        }
+
+        #preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -103,27 +117,23 @@
     <div class="form-container">
         <div class="upload-section col-md-5">
             <form id="imageInfoForm" action="{{ url_for('image_upload') }}" method="GET">
-                <div class="file-upload-container" id="fileUploadContainer">
+                <div>
+                    <div id="previewContainer">
+                        <img id="preview" src="">
+                    </div>
                     <label for="imageUrl">사진 URL</label>
                     <input type="text" name="imageUrl" id="imageUrl" onchange="previewImageFromUrl()">
-                    <img id="preview" alt="Preview Image">
+                    <p style="color: #cd1d1d; font-size: 12px;">업로드 할 사진의 URL을 입력해주세요</p>
                 </div>
-                
-                <p style="color: #cd1d1d; font-size: 12px;">이미지나 URL 중 하나만 입력해 주세요</p>
-
-                <label for="imageName">사진 이름</label>
-                <input type="text" name="imageName" id="imageName">
-
-                <img src="">
-
-
-                <label for="imageName">사진 이름</label>
-                <input type="text" name="imageName" id="imageName">
-
-                <label for="imageDescription">사진 설명</label>
-                <textarea name="imageCaption" id="imageDescription" rows="4"></textarea>
-
-                <button type="submit">Submit</button>
+                <div id="inputStyling">
+                    <label for="imageName">사진 이름</label>
+                    <input type="text" name="imageName" id="imageName" style="margin-bottom:25px;">
+    
+                    <label for="imageDescription">사진 설명</label>
+                    <textarea name="imageCaption" id="imageDescription" rows="4" placeholder="사진에 대한 설명을 입력해주세요."></textarea>
+    
+                    <button type="submit">Submit</button>
+                </div>
             </form>
             <!-- 이미지를 표시할 div -->
             <div class="showImage"></div>
@@ -132,7 +142,23 @@
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI/tZ1T/5bC3zmcKt1W5JY9K6eP5cyUEr5W+o/sE=" crossorigin="anonymous"></script>
+    
     <script>
+        var imageInput = document.getElementById('imageInput');
+        var previewImage = document.getElementById('preview');
+
+        imageInput.addEventListener('input', function () {
+            var imageUrl = imageInput.value.trim();
+
+            if (imageUrl !== "") {
+                previewImage.src = imageUrl;
+                document.getElementById('previewContainer').style.display = 'block';
+            } else {
+                previewImage.src = "";
+                document.getElementById('previewContainer').style.display = 'none';
+            }
+        });
+
         function previewImage(input) {
             const fileUploadContainer = document.getElementById('fileUploadContainer');
             const previewImage = document.getElementById('preview');

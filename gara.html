@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 프리뷰</title>
+    <style>
+        #preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <label for="imageInput">이미지 주소 입력:</label>
+    <input type="text" id="imageInput" placeholder="이미지 주소를 입력하세요">
+    <div id="previewContainer">
+        <img id="preview" src="">
+    </div>
+
+    <script>
+        var imageInput = document.getElementById('imageInput');
+        var previewImage = document.getElementById('preview');
+
+        imageInput.addEventListener('input', function () {
+            var imageUrl = imageInput.value.trim();
+
+            if (imageUrl !== "") {
+                previewImage.src = imageUrl;
+                document.getElementById('previewContainer').style.display = 'block';
+            } else {
+                previewImage.src = "";
+                document.getElementById('previewContainer').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
