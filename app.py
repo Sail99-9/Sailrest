@@ -139,6 +139,7 @@ def mypage(username):
     return render_template('mypage.html', image_data=image_data, username=username)
 
 
+
 @app.route("/image/<image_id>/")
 def image(image_id):
     image = Image.query.filter_by(image_id=image_id).all()

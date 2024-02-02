@@ -111,11 +111,11 @@
                 <div id="user-avatar-nav" class="avatar_nav"></div>
                 <script>
                     $(document).ready(function () {
-                        var userId = "{{ username }}";
+                        var userId = "{{ current_user.username }}";
                         var firstLetter = userId.charAt(0).toUpperCase();
                         $("#user-avatar-nav").text(firstLetter);
                         $("#user-avatar-nav").click(function () {
-                            window.location.href = "/mypage/{{ username }}";
+                            window.location.href = "/mypage/{{ current_user.id }}";
                         });
                     });
                 </script>
@@ -127,13 +127,13 @@
         <div id="user-avatar" class="avatar"></div>
         <script>
             $(document).ready(function () {
-                var userId = "{{ username }}";
+                var userId = "{{ current_user.username }}";
                 var firstLetter = userId.charAt(0).toUpperCase();
                 $("#user-avatar").text(firstLetter);
             });
         </script>
 
-        <h2 class="mt-3 pb-5">{{ username }}</h2>
+        <h2 class="mt-3 pb-5">{{ current_user.username }}</h2>
 
         <div class="pb-4">
             <p class="image_text">내가 올린 이미지</p>
@@ -208,7 +208,7 @@
 
         <script>
             function redirectToMainPage() {
-                window.location.href = '/login/{{ username }}';
+                window.location.href = '/';
             }
 
             function redirectToRegister() {

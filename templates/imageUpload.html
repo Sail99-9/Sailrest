@@ -114,6 +114,10 @@
             max-height: 300px;
             margin-bottom: 10px;
         }
+
+        .url_contan {
+            margin-top: -10px;
+        }
     </style>
 </head>
 
@@ -121,7 +125,7 @@
     <div class="form-container">
         <div class="upload-section col-md-5">
             <form id="imageInfoForm" action="{{ url_for('image_upload') }}" method="GET">
-                <div>
+                <div class="url_contan">
                     <div id="previewContainer"></div>
                         <img id="preview" src="">
                     <label for="imageInput">사진 URL</label>
