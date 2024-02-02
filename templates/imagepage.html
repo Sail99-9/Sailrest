@@ -16,10 +16,8 @@
       }
 
       .container {
-        display: flex;
-        align-items: center;
-        width: 80%;
-        height: 50%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         margin: 20px auto;
         background-color: #ffffff;
         border-radius: 8px;
@@ -188,7 +186,11 @@
 
           <div class="save">
             {% for image in data.image %}
-                <button onclick="location.href='/image/{{ image.image_id }}/pined/'">저장</button>
+            <button
+              onclick="location.href='/image/{{ image.image_id }}/pined/'"
+            >
+              저장
+            </button>
             {% endfor %}
           </div>
         </div>
