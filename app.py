@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin
-from werkzeug.security import check_password_hash
 from datetime import datetime
 
 app = Flask(__name__)
@@ -116,7 +115,6 @@ def login():
         if user and user.password == password:
             # login 한 사용자의 정보를 session에 저장해줌
             login_user(user)
-            print("in")
             return redirect(safe_next_redirect)
         else:
             # 로그인 실패 시
