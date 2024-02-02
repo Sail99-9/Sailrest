@@ -61,6 +61,7 @@ def mainpage():
     image_data = Image.query.with_entities(Image.image_id, Image.image_url).all()
     return render_template('mainpage.html',image_data=image_data)
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
