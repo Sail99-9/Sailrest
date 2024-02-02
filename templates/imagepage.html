@@ -183,7 +183,7 @@
               {% endfor %}
             </div>
           </div>
-
+<!-- 
           <div class="save">
             {% for image in data.image %}
             <button
@@ -192,7 +192,7 @@
               저장
             </button>
             {% endfor %}
-          </div>
+          </div> -->
         </div>
 
         <div class="caption" style="margin-bottom: 50px">
@@ -204,7 +204,7 @@
         <div class="comment">
           <!-- <p>댓글</p> -->
           {% for comment in data.comments %}
-          <!-- <p>{{ comment.user_id }}</p> -->
+          <p>{{ comment.user_id }}</p>
           <p class="say">{{ comment.comment }}</p>
           {% endfor %}
         </div>

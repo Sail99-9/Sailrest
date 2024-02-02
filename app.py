@@ -49,7 +49,7 @@ class Image(db.Model):
 class Comment(db.Model):
     comment_id = db.Column(db.Integer, primary_key=True)
     image_id = db.Column(db.String, nullable=False)
-    # user_id = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.String, nullable=False)
     # order = db.Column(db.Integer, primary_key=True, nullable=False)
     comment = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, primary_key=False)
@@ -147,14 +147,16 @@ def image(image_id):
 
 
 @app.route('/comment/write/')
+@login_required
 def comment_write():
     # user_id 없이 comment만 DB저장하는 방법
     comment_receive = request.args.get("comment")
     image_id = request.args.get("image_id")
+    user_id = current_user.username
     now = datetime.now()
     created_at_time = now
     comment_data = Comment(
-        image_id=image_id, comment=comment_receive, created_at=created_at_time)
+        image_id=image_id,user_id=user_id, comment=comment_receive, created_at=created_at_time)
     db.session.add(comment_data)
     db.session.commit()
     return redirect(url_for('image', image_id=image_id))
