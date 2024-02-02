@@ -62,15 +62,23 @@
         <input class="form-control me-1" type="search" placeholder="검색" aria-label="Search" style="width: 600px" />
         <button class="btn btn-outline-danger" type="submit">Search</button>
       </form>
-
-      <div>
-        <button id="loginButton" type="button" class="btn btn-danger" data-bs-toggle="modal"
-          data-bs-target="#loginModal">
-          로그인
-        </button>
-        <button type="button" class="btn btn-secondary" onclick="redirectToRegister()">
-          회원가입
-        </button>
+      {% if current_user.is_authenticated %}
+            <button id="logoutButton" class="btn btn-secondary" onclick="logout()">로그아웃</button>
+            <div id="user-avatar-nav" class="avatar_nav"></div>
+            <script>
+                $(document).ready(function () {
+                    var userId = "{{ current_user.id }}";
+                    var firstLetter = userId.charAt(0).toUpperCase();
+                    $("#user-avatar-nav").text(firstLetter);
+                    $("#user-avatar-nav").click(function () {
+                        window.location.href = "/mypage/{{ current_user.id }}";
+                    });
+                });
+            </script>
+        {% else %}
+            <button id="loginButton" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#loginModal">로그인</button>
+            <button type="button" class="btn btn-secondary" onclick="redirectToRegister()">회원가입</button>
+        {% endif %}      </div>
 
         <!-- 로그인 모달 -->
         <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
@@ -109,6 +117,11 @@
   </div>
 
   <script>
+    function redirectToUploadPage() {
+      // 버튼을 클릭했을 때 app.py의 /image/uploadPage/로 이동
+      window.location.href = '/image/uploadPage/';
+    }
+
     // 로고 클릭 시 메인 페이지로 이동
     function redirectToMainPage() {
       window.location.href = '/';
@@ -117,6 +130,11 @@
     // 회원가입 버튼 클릭 시 회원가입 페이지로 이동
     function redirectToRegister() {
       window.location.href = '/register';
+    }
+    
+    //로그아웃 버튼 클릭 시
+    function logout(){
+      window.location.href="/logout"
     }
 
     // // Sample img
