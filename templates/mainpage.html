@@ -45,17 +45,17 @@
     }
 
     .avatar_nav {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #e9e9e9;
-            color: #000000;
-            text-align: center;
-            line-height: 35px;
-            font-size: 20px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #E9E9E9;
+      color: #000000;
+      text-align: center;
+      line-height: 35px;
+      font-size: 20px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
 
     #logoutButton {
       margin-right: -80px;
@@ -69,7 +69,6 @@
 <body>
   <nav class="navbar bg-body-white">
     <div class="container-fluid">
-
       <div>
         <img
           src="https://raw.githubusercontent.com/Sail99-9/Sailrest/34d38d42306709617b71615acfe2c8055c973e9a/static/logo.png"
@@ -82,23 +81,23 @@
         <button class="btn btn-outline-danger" type="submit">Search</button>
       </form>
       {% if current_user.is_authenticated %}
-        <button id="logoutButton" class="btn btn-secondary" onclick="logout()">로그아웃</button>
-        <div id="user-avatar-nav" class="avatar_nav"></div>
-        <script>
-          $(document).ready(function () {
-            var userId = "{{ current_user.username }}";
-            var firstLetter = userId.charAt(0).toUpperCase();
-            $("#user-avatar-nav").text(firstLetter);
-            $("#user-avatar-nav").click(function () {
-              window.location.href = "/mypage/{{ current_user.id }}";
-            });
+      <button id="logoutButton" class="btn btn-secondary" onclick="logout()">로그아웃</button>
+      <div id="user-avatar-nav" class="avatar_nav"></div>
+      <script>
+        $(document).ready(function () {
+          var userId = "{{ current_user.username }}";
+          var firstLetter = userId.charAt(0).toUpperCase();
+          $("#user-avatar-nav").text(firstLetter);
+          $("#user-avatar-nav").click(function () {
+            window.location.href = "/mypage/{{ current_user.id }}";
           });
-        </script>
+        });
+      </script>
       {% else %}
       <div>
         <button id="loginButton" type="button" class="btn btn-danger" data-bs-toggle="modal"
-        data-bs-target="#loginModal">로그인</button>
-      <button type="button" class="btn btn-secondary" onclick="redirectToRegister()">회원가입</button>
+          data-bs-target="#loginModal">로그인</button>
+        <button type="button" class="btn btn-secondary" onclick="redirectToRegister()">회원가입</button>
       </div>
       {% endif %}
     </div>
@@ -127,43 +126,35 @@
         </div>
       </div>
     </div>
-
     </div>
     </div>
   </nav>
-
   <div id="photoList">
     {% for image_id, image_url in image_data %}
-      <img src="{{ image_url }}" alt="Image" class="photo" onclick="location.href='/image/{{ image_id }}'">
+    <img src="{{ image_url }}" alt="Image" class="photo" onclick="location.href='/image/{{ image_id }}'">
     {% endfor %}
   </div>
-
   <script>
     function redirectToUploadPage() {
       // 버튼을 클릭했을 때 app.py의 /image/uploadPage/로 이동
       window.location.href = '/image/uploadPage/';
     }
-
     // 로고 클릭 시 메인 페이지로 이동
     function redirectToMainPage() {
       window.location.href = '/';
     }
-
     // 회원가입 버튼 클릭 시 회원가입 페이지로 이동
     function redirectToRegister() {
       window.location.href = '/register';
     }
-
     //로그아웃 버튼 클릭 시
     function logout() {
       window.location.href = "/logout"
     }
-
     function redirectToImage(image_id) {
       Console.log(image_id);
-      window.location.href = "/image/"+ image_id ;
+      window.location.href = "/image/" + image_id;
     }
-
     // // Sample img
     // var photoUrls = [
     //   "https://i.pinimg.com/236x/c5/b3/67/c5b36740351760270c80e50acf272578.jpg",
@@ -175,29 +166,21 @@
     //   "https://i.pinimg.com/236x/69/cf/bb/69cfbbdb087cfc6c1940801f3d4bdfef.jpg",
     //   "https://i.pinimg.com/236x/83/17/b1/8317b132e34806da31102ad291a962b7.jpg",
     // ];
-
     // function createPhotoElements() {
     //   const photoListContainer = document.getElementById("photoList");
-
     //   photoUrls.forEach(function (url) {
     //     const imgElement = document.createElement("img");
     //     imgElement.src = url;
     //     imgElement.alt = "Photo";
     //     imgElement.className = "photo";
-
     //     imgElement.addEventListener("click", function () {
     //       window.location.href = url; // 이 부분은 실제 상세 페이지 URL로 교체해야 합니다.
     //     });
-
     //     photoListContainer.appendChild(imgElement);
     //   });
     // }
-
     // createPhotoElements();
-
   </script>
-
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
     crossorigin="anonymous"></script>
