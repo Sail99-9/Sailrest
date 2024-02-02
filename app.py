@@ -58,7 +58,8 @@ def mainpage():
             session['user_id'] = user.id
             return redirect(url_for('login', username=username))
 
-    return render_template('mainpage.html')
+    image_data = Image.query.with_entities(Image.image_id, Image.image_url).all()
+    return render_template('mainpage.html',image_data=image_data)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -76,7 +77,8 @@ def register():
 
 @app.route('/login/<username>')
 def login(username):
-    return render_template('mainpage_login.html', username=username)
+    image_data = Image.query.with_entities(Image.image_id, Image.image_url).all()
+    return render_template('mainpage_login.html', username=username, image_data=image_data)
 
 @app.route('/mypage/<username>')
 def mypage(username):
@@ -125,7 +127,7 @@ def image_upload_page():
 def image_upload():
     #form 정보 받아오기
     image_receive=request.args.get("image")
-    image_url_receive=request.args.get("imageUrl")
+    image_url_receive=request.args.get("imageInput")
     title_receive=request.args.get("imageName")
     caption_receive=request.args.get("imageCaption")
     author_id_receive="uha"
