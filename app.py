@@ -14,6 +14,11 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager = LoginManager(app)
 
+@login_manager.user_loader
+def load_user(user_id):
+    # 사용자 ID를 기반으로 사용자를 식별하여 반환하는 로직을 구현
+    return User.query.get(user_id)
+
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
@@ -27,7 +32,6 @@ class User(UserMixin, db.Model):
 
     def get_id(self):
         return str(self.id)
-
 
 class Image(db.Model):
     image_id = db.Column(db.String, primary_key=True)
@@ -64,22 +68,10 @@ def create_tables():
 # create_tables 함수를 호출하여 데이터베이스 초기화
 create_tables()
 
-
 @app.route('/', methods=['GET', 'POST'])
 def mainpage():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        user = User.query.filter_by(username=username).first()
-
-        if User.query.filter_by(password=password).first():
-            session['user_id'] = user.id
-            return redirect(url_for('login', username=username))
-
-    image_data = Image.query.with_entities(
-        Image.image_id, Image.image_url).all()
-    return render_template('mainpage.html', image_data=image_data)
+    image_data = Image.query.with_entities(Image.image_id, Image.image_url).all()
+    return render_template('mainpage.html',image_data=image_data)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -88,14 +80,17 @@ def register():
         username = request.form['username']
         password = request.form['password']
 
-        new_user = User(username=username, password=password)
+        now = datetime.now()
+        date=datetime.fromtimestamp(now.timestamp()).strftime('%Y%m%d%H%M%S')
+        id=''.join((password,date))
+
+        new_user = User(username=username, password=password, id=id)
         db.session.add(new_user)
         db.session.commit()
 
         return redirect(url_for('mainpage'))
 
     return render_template('register.html')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -119,7 +114,6 @@ def login():
         if user and user.password == password:
             # login 한 사용자의 정보를 session에 저장해줌
             login_user(user)
-            print("in")
             return redirect(safe_next_redirect)
         else:
             # 로그인 실패 시
