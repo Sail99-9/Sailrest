@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin
+from werkzeug.security import check_password_hash
 from datetime import datetime
 
 app = Flask(__name__)
@@ -14,12 +15,13 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager = LoginManager(app)
 
+
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-    
+
     def __init__(self, id, username, password):
         self.id = id
         self.username = username
@@ -67,19 +69,8 @@ create_tables()
 
 @app.route('/', methods=['GET', 'POST'])
 def mainpage():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        user = User.query.filter_by(username=username).first()
-
-        if User.query.filter_by(password=password).first():
-            session['user_id'] = user.id
-            return redirect(url_for('login', username=username))
-
-    image_data = Image.query.with_entities(
-        Image.image_id, Image.image_url).all()
-    return render_template('mainpage.html', image_data=image_data)
+    image_data = Image.query.with_entities(Image.image_id, Image.image_url).all()
+    return render_template('mainpage.html',image_data=image_data)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -88,7 +79,11 @@ def register():
         username = request.form['username']
         password = request.form['password']
 
-        new_user = User(username=username, password=password)
+        now = datetime.now()
+        date=datetime.fromtimestamp(now.timestamp()).strftime('%Y%m%d%H%M%S')
+        id=''.join((password,date))
+
+        new_user = User(username=username, password=password, id=id)
         db.session.add(new_user)
         db.session.commit()
 
@@ -156,6 +151,7 @@ def image(image_id):
     }
     return render_template('imagepage.html', data=context)
 
+
 @app.route('/comment/write/')
 def comment_write():
     # user_id 없이 comment만 DB저장하는 방벙
@@ -215,7 +211,7 @@ def image_upload():
 
     # 데이터를 db에 저장하기
     image = Image(image_id=image_id_create, author_id=author_id_receive, title=title_receive,
-                  caption=caption_receive, pined=pined_create, image_url=image_info, created_at=created_at_time)
+        caption=caption_receive, pined=pined_create, image_url=image_info, created_at=created_at_time)
     db.session.add(image)
     db.session.commit()
     return redirect(url_for('mainpage'))
