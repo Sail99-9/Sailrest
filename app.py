@@ -83,7 +83,8 @@ def login(username):
 
 @app.route('/mypage/<username>')
 def mypage(username):
-    return render_template('mypage.html', username=username)
+    image_data = Image.query.with_entities(Image.image_id, Image.image_url).all()
+    return render_template('mypage.html', image_data=image_data, username=username)
 
 @app.route("/image/<image_id>/")
 def image(image_id):
