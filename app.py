@@ -52,7 +52,7 @@ class Comment(db.Model):
 
 
 class PinImage(db.Model):
-    pid_id = db.Column(db.Integer, primary_key=True)
+    pin_id = db.Column(db.Integer, primary_key=True)
     image_id = db.Column(db.String, nullable=False)
     user_id = db.Column(db.String)
     created_at = db.Column(db.DateTime, primary_key=False)
@@ -110,6 +110,7 @@ def login():
 
         user = User.query.filter_by(username=user_id).first()
         print(f"User ID: {user.id}")
+        print(f"User ID: {user.username}")
         print(f"User PWD: {user.password}")
         print(password)
         if user and user.password == password:
@@ -141,11 +142,9 @@ def mypage(username):
 @app.route("/image/<image_id>/")
 def image(image_id):
     image = Image.query.filter_by(image_id=image_id).all()
-    author_img_url = "https://velog.velcdn.com/images/heelieben/post/cd5beeed-ba8b-463c-8157-7f0dc803605e/image.png"
     comments = Comment.query.filter_by(image_id=image_id).all()
 
     context = {
-        "author_img_url": author_img_url,
         "image": image,
         "comments": comments,
     }
@@ -154,26 +153,33 @@ def image(image_id):
 
 @app.route('/comment/write/')
 def comment_write():
-    # user_id 없이 comment만 DB저장하는 방벙
+    # user_id 없이 comment만 DB저장하는 방법
     comment_receive = request.args.get("comment")
     image_id = request.args.get("image_id")
 
     now = datetime.now()
-    created_at_time = now
+    created_at_time=now
 
-    # comment_data = Comment(comment_id=comment_id, image_id=image_id, user_id=user_id, order=order, comment=comment_receive, created_at=created_at_time)
+    comment_data = Comment(image_id=image_id, comment=comment_receive, created_at=created_at_time)
 
-    # db.session.add()
-    # db.session.commit()
+    db.session.add(comment_data)
+    db.session.commit()
 
     return redirect(url_for('image', image_id=image_id))
 
+@app.route('/image/<image_id>/pined/')
+def pin_image(image_id):
+    user_id = "hsm" # 로그인 정보 받아와야 함
+    
+    now = datetime.now()
+    created_at_time=now
+    
+    pin_image = PinImage(image_id=image_id, user_id=user_id, created_at=created_at_time)
 
-@app.route('/image/pined/')
-def pin_image():
-    username = "hsm"
-    # DB 해당 이미지 pined 항목 수정
-    return redirect(url_for('mypage', username=username))
+    db.session.add(pin_image)
+    db.session.commit()
+
+    return render_template('mypage.html', username=user_id)
 
 
 @app.route("/image/uploadPage/")
