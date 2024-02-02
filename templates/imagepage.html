@@ -58,12 +58,22 @@
         color: #333;
       }
 
-      .user img {
+      .avatar {
         width: 50px;
         height: 50px;
         border-radius: 50%;
+        background-color: #e9e9e9;
+        color: #000000;
+        text-align: center;
+        line-height: 55px;
+        font-size: 35px;
         margin-right: 10px;
       }
+      /* .user img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+      } */
 
       .save button {
         padding: 8px 16px;
@@ -122,6 +132,7 @@
         background-color: #b81919;
       }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </head>
 
   <body>
@@ -131,9 +142,16 @@
           alt="스토리 핀 이미지"
           fetchpriority="auto"
           loading="auto"
-          {% for image in data.image %}
+          {%
+          for
+          image
+          in
+          data.image
+          %}
           src="{{ image.image_url }}"
-          {% endfor %}
+          {%
+          endfor
+          %}
         />
       </div>
 
@@ -142,16 +160,17 @@
           <div class="user">
             <div>
               {% for image in data.image %}
-                  <a href="/mypage/{{ image.author_id }}" rel="" tabindex="0">
-              {% endfor %}
-                <img
-                  alt="아바타 링크"
-                  fetchpriority="auto"
-                  loading="auto"
-                  src="{{ data.author_img_url }}"
-                  style="width: 50px; height: 50px"
-                />
+              <a href="/mypage/{{ image.author_id }}" rel="" tabindex="0">
+                <div id="author-avatar" class="avatar"></div>
+                <script>
+                  $(document).ready(function () {
+                    var username = "{{ image.author_id }}";
+                    var firstLetter = username.charAt(0).toUpperCase();
+                    $("#author-avatar").text(firstLetter);
+                  });
+                </script>
               </a>
+              {% endfor %}
             </div>
             <div>
               {% for image in data.image %}
@@ -163,7 +182,9 @@
           </div>
 
           <div class="save">
-            <button onclick="location.href='/image/pined/'">저장</button>
+            {% for image in data.image %}
+                <button onclick="location.href='/image/{{ image.image_id }}/pined/'">저장</button>
+            {% endfor %}
           </div>
         </div>
 
@@ -183,9 +204,9 @@
         <div class="wr">
           <p>댓글달기</p>
           <form action="{{ url_for('comment_write') }}" method="GET">
-            <input type="text" name="comment"/>
+            <input type="text" name="comment" />
             {% for image in data.image %}
-                <input type="hidden" value="{{ image.image_id }}" name="image_id">
+            <input type="hidden" value="{{ image.image_id }}" name="image_id" />
             {% endfor %}
             <button type="submit">전송</button>
           </form>
