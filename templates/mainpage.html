@@ -56,10 +56,6 @@
       cursor: pointer;
       margin-left: 10px;
     }
-
-    #logoutButton {
-      margin-right: -80px;
-    }
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -76,23 +72,23 @@
         <button id="createBtn" class="create-btn" onclick="redirectToUploadPage()">업로드</button>
       </div>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-      <form class="d-flex" role="search">
-        <input class="form-control me-1" type="search" placeholder="검색" aria-label="Search" style="width: 600px" />
-        <button class="btn btn-outline-danger" type="submit">Search</button>
       </form>
       {% if current_user.is_authenticated %}
-      <button id="logoutButton" class="btn btn-secondary" onclick="logout()">로그아웃</button>
-      <div id="user-avatar-nav" class="avatar_nav"></div>
-      <script>
-        $(document).ready(function () {
-          var userId = "{{ current_user.username }}";
-          var firstLetter = userId.charAt(0).toUpperCase();
-          $("#user-avatar-nav").text(firstLetter);
-          $("#user-avatar-nav").click(function () {
-            window.location.href = "/mypage/{{ current_user.id }}";
+      <div class="d-flex justify-content-end align-items-center">
+        <button id="logoutButton" class="btn btn-secondary" onclick="logout()">로그아웃</button>
+        <div id="user-avatar-nav" class="avatar_nav"></div>
+        <script>
+          $(document).ready(function () {
+            var userId = "{{ current_user.username }}";
+            var firstLetter = userId.charAt(0).toUpperCase();
+            $("#user-avatar-nav").text(firstLetter);
+            $("#user-avatar-nav").click(function () {
+              window.location.href = "/mypage/{{ current_user.id }}";
+            });
           });
-        });
-      </script>
+        </script>
+      </div>
+
       {% else %}
       <div>
         <button id="loginButton" type="button" class="btn btn-danger" data-bs-toggle="modal"
@@ -101,6 +97,7 @@
       </div>
       {% endif %}
     </div>
+
     <!-- 로그인 모달 -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
       aria-hidden="true">
@@ -129,6 +126,7 @@
     </div>
     </div>
   </nav>
+
   <div id="photoList">
     {% for image_id, image_url in image_data %}
     <img src="{{ image_url }}" alt="Image" class="photo" onclick="location.href='/image/{{ image_id }}'">
@@ -139,22 +137,27 @@
       // 버튼을 클릭했을 때 app.py의 /image/uploadPage/로 이동
       window.location.href = '/image/uploadPage/';
     }
+
     // 로고 클릭 시 메인 페이지로 이동
     function redirectToMainPage() {
       window.location.href = '/';
     }
+
     // 회원가입 버튼 클릭 시 회원가입 페이지로 이동
     function redirectToRegister() {
       window.location.href = '/register';
     }
+
     //로그아웃 버튼 클릭 시
     function logout() {
       window.location.href = "/logout"
     }
+
     function redirectToImage(image_id) {
       Console.log(image_id);
       window.location.href = "/image/" + image_id;
     }
+
     // // Sample img
     // var photoUrls = [
     //   "https://i.pinimg.com/236x/c5/b3/67/c5b36740351760270c80e50acf272578.jpg",

@@ -184,7 +184,7 @@
             </div>
           </div>
 
-          <div class="save">
+          <!-- <div class="save">
             {% for image in data.image %}
             <button
               onclick="location.href='/image/{{ image.image_id }}/pined/'"
@@ -193,7 +193,7 @@
             </button>
             {% endfor %}
           </div>
-        </div>
+        </div> -->
 
         <div class="caption" style="margin-bottom: 50px">
           {% for image in data.image %}
@@ -204,7 +204,7 @@
         <div class="comment">
           <!-- <p>댓글</p> -->
           {% for comment in data.comments %}
-          <!-- <p>{{ comment.user_id }}</p> -->
+          <p>{{ comment.user_id }}</p>
           <p class="say">{{ comment.comment }}</p>
           {% endfor %}
         </div>
@@ -215,7 +215,11 @@
             {% for image in data.image %}
             <input type="hidden" value="{{ image.image_id }}" name="image_id" />
             {% endfor %}
+            {% if current_user.is_authenticated %}
             <button type="submit">전송</button>
+            {% else %}
+            <button type="submit" disabled style="background-color: #e9e9e9;">전송</button>
+            {% endif %}
           </form>
         </div>
       </div>
