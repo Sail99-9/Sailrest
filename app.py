@@ -15,6 +15,10 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager = LoginManager(app)
 
+@login_manager.user_loader
+def load_user(user_id):
+    # 사용자 ID를 기반으로 사용자를 식별하여 반환하는 로직을 구현
+    return User.query.get(user_id)
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
@@ -30,7 +34,6 @@ class User(UserMixin, db.Model):
     def get_id(self):
         return str(self.id)
 
-
 class Image(db.Model):
     image_id = db.Column(db.String, primary_key=True)
     author_id = db.Column(db.String, primary_key=False)
@@ -39,7 +42,6 @@ class Image(db.Model):
     pined = db.Column(db.Integer, primary_key=False)
     image_url = db.Column(db.String, primary_key=False)
     created_at = db.Column(db.DateTime, primary_key=False)
-
 
 class Comment(db.Model):
     comment_id = db.Column(db.Integer, primary_key=True)
