@@ -78,20 +78,13 @@
         border-radius: 50%;
       } */
 
-      .save button {
-        padding: 8px 16px;
-        font-size: 14px;
-        font-weight: bold;
-        color: #ffffff;
-        background-color: #cd1d1d;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
+      .save {
+        display: hidden;
       }
 
-      .save button:hover {
-        background-color: #b81919;
-      }
+      /* .save button {
+        display: hidden;
+      } */
 
       .comment .say {
         background-color: #e9e9e9;
@@ -183,17 +176,17 @@
               {% endfor %}
             </div>
           </div>
-<!-- 
+
           <div class="save">
             {% for image in data.image %}
-            <button
+            <!-- <button
               onclick="location.href='/image/{{ image.image_id }}/pined/'"
             >
               저장
-            </button>
+            </button> -->
             {% endfor %}
           </div>
-        </div> -->
+        </div>
 
         <div class="caption" style="margin-bottom: 50px">
           {% for image in data.image %}
@@ -214,11 +207,12 @@
             <input type="text" name="comment" />
             {% for image in data.image %}
             <input type="hidden" value="{{ image.image_id }}" name="image_id" />
-            {% endfor %}
-            {% if current_user.is_authenticated %}
+            {% endfor %} {% if current_user.is_authenticated %}
             <button type="submit">전송</button>
             {% else %}
-            <button type="submit" disabled style="background-color: #e9e9e9;">전송</button>
+            <button type="submit" disabled style="background-color: #e9e9e9">
+              전송
+            </button>
             {% endif %}
           </form>
         </div>
