@@ -58,7 +58,9 @@ def mainpage():
             session['user_id'] = user.id
             return redirect(url_for('login', username=username))
 
-    return render_template('mainpage.html')
+    image_data = Image.query.with_entities(Image.image_id, Image.image_url).all()
+    return render_template('mainpage.html',image_data=image_data)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -76,7 +78,8 @@ def register():
 
 @app.route('/login/<username>')
 def login(username):
-    return render_template('mainpage_login.html', username=username)
+    image_data = Image.query.with_entities(Image.image_id, Image.image_url).all()
+    return render_template('mainpage_login.html', username=username, image_data=image_data)
 
 @app.route('/mypage/<username>')
 def mypage(username):
