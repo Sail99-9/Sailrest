@@ -83,7 +83,7 @@
             var firstLetter = userId.charAt(0).toUpperCase();
             $("#user-avatar-nav").text(firstLetter);
             $("#user-avatar-nav").click(function () {
-              window.location.href = "/mypage/{{ current_user.id }}";
+              window.location.href = "/mypage/{{ current_user.username }}";
             });
           });
         </script>

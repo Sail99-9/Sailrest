@@ -127,10 +127,9 @@ def logout():
     return redirect(url_for('mainpage'))
 
 
-@login_required
 @app.route('/mypage/<username>')
 def mypage(username):
-    image_data = Image.query.filter_by(author_id=current_user.username).with_entities(
+    image_data = Image.query.filter_by(author_id=username).with_entities(
         Image.image_id, Image.image_url).all()
     return render_template('mypage.html', image_data=image_data, username=username)
 
